@@ -3,7 +3,7 @@ import pdb
 from app import app
 from models import db, User
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
 
 app.config['TESTING'] = True
@@ -39,9 +39,9 @@ class UserViewsTestCase(TestCase):
 			html = resp.get_data(as_text=True)
 
 			self.assertEqual(resp.status_code, 200)
-			self.assertIn('<h3>USERS</h3>', html)
+			self.assertIn("<h3>USERS</h3>", html)
 
-	def test_show_form(self):
+	def test_show_new_user_form(self):
 		with app.test_client() as client:
 			resp = client.get('/users/new')
 			html = resp.get_data(as_text=True)
@@ -51,14 +51,13 @@ class UserViewsTestCase(TestCase):
 
 	def test_show_user(self):
 		with app.test_client() as client:
-			resp = client.get('/users/4/edit')
+			resp = client.get(f"/users/{self.user_id}")
 			html = resp.get_data(as_text=True)
-
-			self.assertIn("<h3>EDIT USER</h3>", html)
+			self.assertIn("<title>User Info</title>", html)
 
 	def test_delete_userself(self):
 		with app.test_client() as client:
-			resp = client.post('/users/4/delete')
+			resp = client.post(f"/users/{self.user_id}/delete")
 			html = resp.get_data(as_text=True)
 
 			self.assertEqual(resp.status_code, 302)
