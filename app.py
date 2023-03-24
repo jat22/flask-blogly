@@ -9,9 +9,10 @@ app = Flask(__name__)
 app.app_context().push()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
+
 db.create_all()
 
 from flask_debugtoolbar import DebugToolbarExtension
@@ -51,12 +52,13 @@ def show_user(user_id):
 @app.route('/users/<int:user_id>/edit')
 def show_edit(user_id):
 	user = User.query.get_or_404(user_id)
+	pdb.set_trace()
 	return render_template('edit_user.html', user=user)
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def update_user(user_id):
 	user = User.query.get_or_404(user_id)
-	
+
 	user.first_name = request.form['first_name']
 	user.last_name = request.form['last_name']
 	user.image_url = request.form['image_url']

@@ -14,7 +14,7 @@ class User(db.Model):
 
 	def __repr__(self):
 		p = self
-		return f"<User {p.id} {p.first_name} {p.last_name}"
+		return f"<User {p.id} {p.first_name} {p.last_name}>"
 
 	id = db.Column(db.Integer,
 					primary_key = True,
