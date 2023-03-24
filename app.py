@@ -2,6 +2,7 @@
 
 from flask import Flask, redirect, render_template, request
 from models import db, connect_db, User
+import pdb
 
 
 app = Flask(__name__)
@@ -55,12 +56,11 @@ def show_edit(user_id):
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def update_user(user_id):
 	user = User.query.get_or_404(user_id)
-
+	
 	user.first_name = request.form['first_name']
 	user.last_name = request.form['last_name']
 	user.image_url = request.form['image_url']
 
-	db.session.add(user)
 	db.session.commit()
 
 	return redirect('/users')
