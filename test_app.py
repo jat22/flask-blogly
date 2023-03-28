@@ -61,3 +61,5 @@ class UserViewsTestCase(TestCase):
 			html = resp.get_data(as_text=True)
 
 			self.assertEqual(resp.status_code, 302)
+
+

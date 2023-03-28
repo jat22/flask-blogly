@@ -7,13 +7,24 @@
 <div class="card" style="width: 18rem;">
 	<img class="card-img-top" src="{{user.image_url}}" alt="Card image cap">
 	<div class="card-body">
-	  <h5 class="card-title">{{user.first_name}} {{user.last_name}}</h5>
-	  <form>
-		<button class="btn btn-primary btn-small" formaction="/users/{{user.id}}/edit" formmethod="GET">EDIT</button>
-		<button class="btn btn-danger btn-small" formaction="/users/{{user.id}}/delete" formmethod="POST">DELETE</button>
-	  </form>
+	  	<h3 class="card-title">{{user.first_name}} {{user.last_name}}</h5>
+	  	<form>
+			<button class="btn btn-primary btn-small" formaction="/users/{{user.id}}/edit" formmethod="GET">EDIT</button>
+			<button class="btn btn-danger btn-small" formaction="/users/{{user.id}}/delete" formmethod="POST">DELETE</button>
+		</form>
+		<div class="container">
+			<h4>Posts</h6>
+			<ul>
+				{% for post in posts %}
+						<li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+				{% endfor %}
+			</ul>
+			<form action="/users/{{user.id}}/posts/new">
+				<button class="btn btn-small btn-primary">Add Post</button>
+			</form>
+		</div>
 	</div>
-  </div>
+</div>
 
 {% endblock %}
 
