@@ -5,6 +5,8 @@ import datetime
 
 db = SQLAlchemy()
 
+DEFAULT_IMAGE = "https://media.istockphoto.com/id/1316420668/vector/user-icon-human-person-symbol-social-profile-icon-avatar-login-sign-web-user-symbol.jpg?s=612x612&w=0&k=20&c=AhqW2ssX8EeI2IYFm6-ASQ7rfeBWfrFFV4E87SaFhJE="
+
 def connect_db(app):
 	db.app = app
 	db.init_app(app)
@@ -24,8 +26,11 @@ class User(db.Model):
 					nullable = False)
 	last_name = db.Column(db.String,
 					nullable = False)
-	image_url = db.Column(db.String)
-	# post = db.relationship('Post', backref='users')
+	image_url = db.Column(db.String, 
+					nullable=False,
+					default = DEFAULT_IMAGE)
+	post = db.relationship('Post', backref='users', 
+					cascade = 'all, delete-orphan')
 
 class Post(db.Model):
 	"""POST"""
