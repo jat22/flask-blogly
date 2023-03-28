@@ -1,7 +1,7 @@
 from unittest import TestCase
 import pdb
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
@@ -25,8 +25,14 @@ class UserViewsTestCase(TestCase):
 		db.session.add(user)
 		db.session.commit()
 
+		post = Post(title="Test Post", content="This should serve as a test post")
+		db.session.add(post)
+		db.session.commit()
+
 		self.user_id = user.id
 		self.user = user
+		self.post = post
+		self.post_id = post.id
 		# pdb.set_trace()
 
 
@@ -62,4 +68,17 @@ class UserViewsTestCase(TestCase):
 
 			self.assertEqual(resp.status_code, 302)
 
+	def test_show_post(self):
+		with app.test_client() as client:
+			resp = client.get(f"post/{self.post_id}")
+			html = resp.get_data(as_text=True)
+
+			self.assertIn('Test Post', html)
+
+	def test_show_edit_post(self):
+		with app.test_client as client:
+			resp = client.get('/post/1/edit')
+			html = resp.get_data(as_text=True)
+
+			self.assertIn('Edit Post', html)
 
