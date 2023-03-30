@@ -3,22 +3,24 @@
 {% block title%}{{post.title}}{% endblock %}
 
 {% block contents %} 
-
-<div class="card" style="width: 18rem;">
-	<div class="card-body">
-	  	<h3 class="card-title">{{post.title}}</h5>
-		<p>
-			{{post.content}}
-		</p>
-		<p>By {{user.first_name}} {{user.last_name}}</p>
-		<form action="/posts/{{post.id}}/edit">
-			<button class="btn btn-small btn-primary">Edit</button>
-		</form>
-		<form action="/posts/{{post.id}}/delete" method="POST">
-			<button class="btn btn-danger btn-small">Delete</button>
-		</form>
-		</div>
+<div class="container" style="width: 35rem;">
+	<h3 class="card-title">{{post.title}}</h5>
+	<p>
+		{{post.content}}
+	</p>
+	<p>By {{user.first_name}} {{user.last_name}}</p>
+	<div>
+		<b>Tags:</b>
+		{% for tag in tags %}
+			{% if tag in post.tags %}
+				<a href='/tags/{{tag.id}}'><span class="badge badge-primary" style="background-color:rgb(49, 192, 239)">{{tag.name}}</span></a>
+			{% endif %}
+		{% endfor %}
 	</div>
+	<form>
+		<button class="btn btn-small btn-primary" formaction="/posts/{{post.id}}/edit">Edit</button>
+		<button class="btn btn-danger btn-small" formaction="/posts/{{post.id}}/delete" formmethod="POST">Delete</button>
+		<a href="/users/{{user.id}}" class="btn btn-secondary">Back</a>
 </div>
 
 {% endblock %}

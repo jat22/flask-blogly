@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Tag Info{% endblock %}
+
+{% block contents%}
+<div class="container">
+	<div class="card" style="width: 18rem;">
+		<div class="card-body">
+			  <h3 class="card-title">{{tag.name}}</h5>
+			<ul>
+				{% for post in posts %}
+					<li><a href='/posts/{{post.id}}'>{{post.title}}</a></li>
+				{% endfor %}
+			</ul>
+			<form action="/tags/{{tag.id}}/edit">
+				<button class="btn btn-small btn-primary">Edit</button>
+			</form>
+			<form action="/tags/{{tag.id}}/delete" method="POST">
+				<button class="btn btn-danger btn-small">Delete</button>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

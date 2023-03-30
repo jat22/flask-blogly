@@ -1,11 +1,11 @@
 """Models for Blogly."""
 
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
 import datetime
 
 db = SQLAlchemy()
 
-DEFAULT_IMAGE = "https://media.istockphoto.com/id/1316420668/vector/user-icon-human-person-symbol-social-profile-icon-avatar-login-sign-web-user-symbol.jpg?s=612x612&w=0&k=20&c=AhqW2ssX8EeI2IYFm6-ASQ7rfeBWfrFFV4E87SaFhJE="
+DEFAULT_IMAGE = "https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2015/3/31/1427823466140/1fe69f2c-59d6-4e07-ab3a-8b60dbe35db2-1020x1020.jpeg?width=700&quality=85&auto=format&fit=max&s=488d904c14758c38d8010de62c742e4b"
 
 def connect_db(app):
 	db.app = app
@@ -29,8 +29,9 @@ class User(db.Model):
 	image_url = db.Column(db.String, 
 					nullable=False,
 					default = DEFAULT_IMAGE)
-	post = db.relationship('Post', backref='user', 
-					cascade = 'all, delete-orphan')
+	posts = db.relationship("Post", 
+					cascade = "all, delete-orphan",
+					backref='user')
 
 class Post(db.Model):
 	"""POST"""
@@ -51,9 +52,6 @@ class Post(db.Model):
 					default=datetime.datetime.now())
 	author_id = db.Column(db.Integer,
 					db.ForeignKey('users.id'))
-	tag = db.relationship('Tag', 
-					secondary='posts_tags', 
-					backref='posts')
 
 class Tag(db.Model):
 	"""TAG"""
@@ -68,6 +66,10 @@ class Tag(db.Model):
 					autoincrement = True)
 	name = db.Column(db.Text,
 					unique = True)
+	posts = db.relationship("Post", 
+					secondary="posts_tags",
+					cascade = "all, delete",
+					backref='tags')
 
 class PostTag(db.Model):
 
